@@ -89,9 +89,9 @@ table, th, td {
         </div>
         <div class="grid-item">
             <h3>Dexterity:</h3>
-            <h3>20</h3>
+            <h3>18</h3>
             <hr class="solid">
-            <h4 id=D>+5</h4>
+            <h4 id=D>+4</h4>
         </div>
         <div class="grid-item">
             <h3>Constitution:</h3>
@@ -140,9 +140,21 @@ table, th, td {
                 </label>
             </div>
             <div class="form-check">
+                <input class="form-check-input" type="checkbox"  onchange="checkTotal()" value="" id="dualwielding">
+                <label class="form-check-label" for="defaultCheck1">
+                Dual Wielding
+                </label>
+            </div>
+            <div class="form-check">
                 <input class="form-check-input" type="checkbox"  onchange="checkTotal()" value="" id="mageArmor">
                 <label class="form-check-label" for="defaultCheck1">
                 Mage Armor (A)
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"  onchange="checkTotal()" value="" id="haste">
+                <label class="form-check-label" for="defaultCheck1">
+                Haste (A)
                 </label>
             </div>
             <hr class="solid">
@@ -165,14 +177,13 @@ table, th, td {
               <th>Damage</th>
             </tr>
             <tr>
-
               <td>
                 <div class="radio">
                   <input type="radio" name="optradio" id="Fiora" checked>Fiora
                 </div>
               </td>
               <td>Archeron Rapier</td>
-              <td>+8</td>
+              <td>+11</td>
               <td>1d8+6</td>
             </tr>
             <tr>
@@ -182,8 +193,18 @@ table, th, td {
                       </div>
                 </td>
                 <td>Moon Touched Scimitar</td>
-                <td>+7</td>
+                <td>+10</td>
                 <td>1d6+5</td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="radio">
+                        <input  type="radio" name="optradio" id="Carver" disabled>Carver
+                      </div>
+                </td>
+                <td>Shadowblade</td>
+                <td>+7</td>
+                <td>Various</td>
             </tr>
           </table>
           <br>
@@ -217,10 +238,12 @@ table, th, td {
 
     //Base Definitions:
     let BaseArmor = 10;
-    let DexArmorBonus = 5;
+    let DexArmorBonus = 4;
     let CloakArmorBonus = 1 
     let BladeSongArmorBonus = 0;
     let MageArmor = 13 + D;
+    let haste = 0;
+    let dualwielding = 0;
     BaseACArray = [BaseArmor, DexArmorBonus, CloakArmorBonus]  
     // Bladesong is Intelligence modifier to your AC
     // Mage Armor replaces base armor with a 13
@@ -229,6 +252,8 @@ table, th, td {
 
     let mageArmorInput = document.getElementById("mageArmor")
     let bladeSongInput = document.getElementById("bladeSong")
+    let hasteInput = document.getElementById("haste")
+    let dualwieldingInput = document.getElementById("dualwielding")
 
     document.getElementById("AC").innerText = this.ArmorCalc(BaseACArray)
 
@@ -249,8 +274,15 @@ function checkTotal(){
     if (bladeSongInput.checked == true){
         BladeSongArmorBonus = I;
     } else {BladeSongArmorBonus = 0}
+    if (hasteInput.checked == true){
+        haste = 2;
+    } else {haste = 0}
+    if (dualwieldingInput.checked == true){
+        dualwielding =1;
+    } else {dualwielding = 0}
 
-    let ArmorArray = [BaseArmor, DexArmorBonus, CloakArmorBonus, BladeSongArmorBonus]
+
+    let ArmorArray = [BaseArmor, DexArmorBonus, CloakArmorBonus, BladeSongArmorBonus, haste, dualwielding]
     let modifiedArmor = this.ArmorCalc(ArmorArray)
     document.getElementById("AC").innerText = modifiedArmor
 }
@@ -264,10 +296,10 @@ let McClane = document.getElementById("McClane")
 function rollHit(){
     if (Fiora.checked == true){
         console.log("Fiora True")
-        var hit = 8;    }
+        var hit = 11;    }
     else if (McClane.checked == true){
         console.log("McClane True")
-        var hit = 7;
+        var hit = 10;
     } else {console.log("no weapon selected")}
 
     let apiURL = baseURL+`?num=1&min=1&max=20&col=1&base=10&format=plain&rnd=new`
