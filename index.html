@@ -199,12 +199,22 @@ table, th, td {
             <tr>
                 <td>
                     <div class="radio">
-                        <input  type="radio" name="optradio" id="Carver" disabled>Carver
+                        <input  type="radio" name="optradio" id="Carver">Carver
                       </div>
                 </td>
-                <td>Shadowblade</td>
+                <td>Shadowblade
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="shadowblade" id="level2" value="2" onchange="CDMD(this.value)">
+                        <label class="form-check-label" for="level2">2</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="shadowblade" id="level3" value="3" onchange="CDMD(this.value)">
+                        <label class="form-check-label" for="level3">3</label>
+                      </div>
+                
+                </td>
                 <td>+7</td>
-                <td>Various</td>
+                <td id="shadowbladeDamageModifier"></td>
             </tr>
           </table>
           <br>
@@ -289,9 +299,28 @@ function checkTotal(){
 
 // Hit and Damage Script Start
 var baseURL = "https://www.random.org/integers/"
-
+//Standard Weapons
 let Fiora = document.getElementById("Fiora")
 let McClane = document.getElementById("McClane")
+
+
+//Shadowblade Stuff
+let CarverDamageModifier = document.getElementById("shadowbladeDamageModifier")
+let Carver = document.getElementById("Carver")
+let CarverLevel2 = document.getElementById("level2")
+let CarverLevel3 = document.getElementById("level3")
+
+    //CarverDamageModifierDisplay
+    function CDMD(level){
+    if (level == "2"){
+        CarverDamageModifier.innerHTML = "2d8"
+    }
+    else if (level == "3"){
+        CarverDamageModifier.innerHTML = "3d8"
+    }
+    else {CarverDamageModifier.innerHTML = "Various"}
+    }
+
 
 function rollHit(){
     if (Fiora.checked == true){
@@ -313,25 +342,53 @@ function rollHit(){
 } // rolldHit
 
 function rollDamage(){
+    let rolls = 1
+    let bonus = 0;
+    let damage = 0;
     if (Fiora.checked == true){
         console.log("Fiora True")
         var int = 8;
-        var bonus = 6
+        bonus = 6;
     }
     else if (McClane.checked == true){
         console.log("McClane True")
         var int = 6;
-        var bonus = 5
-    } else {console.log("no weapon selected")}
-
-    let apiURL = baseURL+`?num=1&min=1&max=`+`${int}`+`&col=1&base=10&format=plain&rnd=new`
-    let promise = fetch(apiURL)
-    .then(response => response.json())
-    .then(data => {
-        console.log("Random Num Return:", data)
-        damage = (Number(data) + bonus)
-        document.getElementById("damageRoll").innerText = damage
-    })
+        bonus = 5;
+    } 
+    else if (Carver.checked == true){
+        var int = 8;
+        bonus = 0;
+        if (CarverLevel2.checked == true){
+            let rolls = 2;
+        }
+        else if (CarverLevel3.checked == true){
+            let rolls = 3;
+        }
+    }
+    else {console.log("no weapon selected")}
+    
+    let rollNums = []
+    console.log("rolls", rolls)
+    for (i = 0; i < rolls; i++) {
+        console.log("rolling")
+        let apiURL = baseURL+`?num=1&min=1&max=`+`${int}`+`&col=1&base=10&format=plain&rnd=new`;
+        let promise = fetch(apiURL)
+        .then(response => response.json())
+        .then(data => {
+            console.log("Random Num Return:", data)
+            rollNums.push(Number(data))
+        })
+        }
+    console.log("rollNums:", rollNums)
+    console.log("bonus", bonus)
+    for (var item in rollNums){
+        damage = Number(item) + damage
+    }
+    console.log("damage", damage)
+    totalDamage = damage + bonus;
+    console.log("total Damage", totalDamage)
+    
+    document.getElementById("damageRoll").innerText = totalDamage
 }// end rollDamage
 
 function resetRolls(){
