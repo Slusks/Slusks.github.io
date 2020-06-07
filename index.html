@@ -325,10 +325,15 @@ let CarverLevel3 = document.getElementById("level3")
 function rollHit(){
     if (Fiora.checked == true){
         console.log("Fiora True")
-        var hit = 11;    }
+        var hit = 11;    
+    }
     else if (McClane.checked == true){
         console.log("McClane True")
         var hit = 10;
+    }
+    else if (Carver.checked == true){
+        console.log("Carver True")
+        var hit = 7;
     } else {console.log("no weapon selected")}
 
     let apiURL = baseURL+`?num=1&min=1&max=20&col=1&base=10&format=plain&rnd=new`
@@ -356,13 +361,14 @@ function rollDamage(){
         bonus = 5;
     } 
     else if (Carver.checked == true){
+        console.log("Carver True")
         var int = 8;
         bonus = 0;
         if (CarverLevel2.checked == true){
-            let rolls = 2;
+            rolls = 2;
         }
         else if (CarverLevel3.checked == true){
-            let rolls = 3;
+            rolls = 3;
         }
     }
     else {console.log("no weapon selected")}
@@ -377,8 +383,12 @@ function rollDamage(){
         .then(data => {
             console.log("Random Num Return:", data)
             rollNums.push(Number(data))
+            if (rollNums.length == rolls){
+                this.damageSum(rollNums, bonus)
+            }
         })
         }
+    /*
     console.log("rollNums:", rollNums)
     console.log("bonus", bonus)
     for (var item in rollNums){
@@ -389,7 +399,17 @@ function rollDamage(){
     console.log("total Damage", totalDamage)
     
     document.getElementById("damageRoll").innerText = totalDamage
+    */
 }// end rollDamage
+
+function damageSum(numberArray, bonus){
+    var sum = numberArray.reduce(function(a, b){
+        return a + b;
+    }, 0);
+    totalDamage = sum + bonus
+    document.getElementById("damageRoll").innerText = totalDamage
+}
+
 
 function resetRolls(){
     document.getElementById("hitRoll").innerText = 0;
