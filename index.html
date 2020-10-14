@@ -179,7 +179,7 @@ table, th, td {
             <tr>
               <td>
                 <div class="radio">
-                  <input type="radio" name="optradio" id="Fiora" checked>Fiora
+                  <input type="radio" name="optradio" id="Fiora" checked> Fiora
                 </div>
               </td>
               <td>Archeron Rapier</td>
@@ -189,7 +189,7 @@ table, th, td {
             <tr>
                 <td>
                     <div class="radio">
-                        <input  type="radio" name="optradio" id="McClane">McClane
+                        <input  type="radio" name="optradio" id="McClane"> McClane
                       </div>
                 </td>
                 <td>Moon Touched Scimitar</td>
@@ -199,7 +199,17 @@ table, th, td {
             <tr>
                 <td>
                     <div class="radio">
-                        <input  type="radio" name="optradio" id="Carver">Carver
+                        <input  type="radio" name="optradio" id="Vin"> Vin
+                      </div>
+                </td>
+                <td>Feolinn Short Sword</td>
+                <td>+7</td>
+                <td>1d8+4</td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="radio">
+                        <input  type="radio" name="optradio" id="Carver"> Carver
                       </div>
                 </td>
                 <td>Shadowblade
@@ -302,6 +312,7 @@ var baseURL = "https://www.random.org/integers/"
 //Standard Weapons
 let Fiora = document.getElementById("Fiora")
 let McClane = document.getElementById("McClane")
+let Vin = document.getElementById("Vin")
 
 
 //Shadowblade Stuff
@@ -329,6 +340,10 @@ function rollHit(){
     }
     else if (McClane.checked == true){
         console.log("McClane True")
+        var hit = 7;
+    }
+    else if (Vin.checked == true){
+        console.log("Vin True")
         var hit = 7;
     }
     else if (Carver.checked == true){
@@ -360,6 +375,11 @@ function rollDamage(){
         console.log("McClane True")
         var int = 6;
         bonus = 5;
+    }
+    else if (Vin.checked == true){
+        console.log("Vin True")
+        var int = 8
+        bonus = 4;
     } 
     else if (Carver.checked == true){
         console.log("Carver True")
@@ -389,18 +409,6 @@ function rollDamage(){
             }
         })
         }
-    /*
-    console.log("rollNums:", rollNums)
-    console.log("bonus", bonus)
-    for (var item in rollNums){
-        damage = Number(item) + damage
-    }
-    console.log("damage", damage)
-    totalDamage = damage + bonus;
-    console.log("total Damage", totalDamage)
-    
-    document.getElementById("damageRoll").innerText = totalDamage
-    */
 }// end rollDamage
 
 function damageSum(numberArray, bonus){
